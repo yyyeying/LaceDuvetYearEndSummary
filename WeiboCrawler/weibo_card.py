@@ -14,8 +14,6 @@ class WeiboCard(object):
         # print(self.rich_text)
         print(self.year, self.month, self.day)
         # print(self.is_needed())
-        self.get_dress_name()
-        self.get_pictures()
 
     def decode_create_time(self):
         cr = self.raw_create_time.split(' ')
@@ -57,7 +55,7 @@ class WeiboCard(object):
         if len(pics) >= 2:
             return ['https://wx3.sinaimg.cn/large/{}.jpg'.format(p) for p in pics[:2]]
         else:
-            return 'https://wx3.sinaimg.cn/large/{}.jpg'.format(pics[0])
+            return ['https://wx3.sinaimg.cn/large/{}.jpg'.format(pics[0])]
 
 
 

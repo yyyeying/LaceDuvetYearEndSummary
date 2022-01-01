@@ -47,7 +47,14 @@ class WeiboCrawler(object):
             since_id = weibo_card_list[-1].mid
             # finished = True
         # print(len(weibo_list))
-        return list(set(weibo_list))
+        # 去重和筛选
+        date_list = []
+        new_weibo_list = []
+        for weibo in weibo_list:
+            if [weibo.month, weibo.day] not in date_list and weibo.is_needed():
+                date_list.append([weibo.month, weibo.day])
+                new_weibo_list.append(weibo)
+        return new_weibo_list
 
 
 if __name__ == '__main__':
