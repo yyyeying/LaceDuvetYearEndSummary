@@ -1,0 +1,3 @@
+[submodule "DuvetsCoordinatesToday"]
+	path = DuvetsCoordinatesToday
+	url = https://github.com/duvet/DuvetsCoordinatesToday.git

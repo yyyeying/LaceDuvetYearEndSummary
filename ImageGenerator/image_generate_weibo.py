@@ -4,7 +4,7 @@ import requests
 from PIL import Image, ImageDraw, ImageFont
 
 from WeiboCrawler.weibo_card import WeiboCard
-from Coordinates.coordinate import Coordinate
+from image_generate import ImageGenerator
 
 
 def dounload_image(url: str, dest: str):
@@ -14,20 +14,21 @@ def dounload_image(url: str, dest: str):
         open(dest, 'wb').write(response.content)
 
 
-class ImageGenerator(object):
-    def __init__(self, page_num: int = 9):
-        self.weibo_list = None
+class ImageGeneratorWeibo(ImageGenerator):
+    def __init__(self, weibo_list: List[WeiboCard], page_num: int = 9):
+        ImageGenerator.__init__(weibo_list, page_num)
         self.single_height = 1080
         self.single_width = int(self.single_height * 3 / 4)
         self.rim = 20
         self.font_size = 36
+        self.weibo_list = sorted(weibo_list, key=lambda x: x.get_dress_name())
         self.page_num = page_num
         self.pics_per_page = int(len(self.weibo_list) / page_num) + 1
         self.cache_path = os.path.join(os.getcwd(), 'image_cache')
 
     def generate(self):
         pic_width = self.single_width * 2 + 3 * self.rim
-        pic_height = (self.single_height + 2 * self.rim + 2 * self.font_size) * self.pics_per_page
+        pic_height = (self.single_height + 2 * self.rim + 2*self.font_size) * self.pics_per_page
         print(pic_width, pic_height)
         for page in range(self.page_num):
             image = Image.new(mode='RGB',
@@ -41,10 +42,9 @@ class ImageGenerator(object):
                                                                self.weibo_list[i].get_dress_name().replace('/', ', '),
                                                                'single')))
                     box = (0,
-                           (self.single_height + 2 * self.rim + 2 * self.font_size) * (i - page * self.pics_per_page),
+                           (self.single_height + 2 * self.rim + 2*self.font_size) * (i - page * self.pics_per_page),
                            pic_width,
-                           (self.single_height + 2 * self.rim + 2 * self.font_size) * (
-                                       i - page * self.pics_per_page + 1))
+                           (self.single_height + 2 * self.rim + 2*self.font_size) * (i - page * self.pics_per_page + 1))
                     print(box)
                     image.paste(im=single_image,
                                 box=box)
@@ -61,7 +61,7 @@ class ImageGenerator(object):
         print('generate single dress: {} {} {}'.format(weibo.get_dress_name(), weibo.month, weibo.day))
         target = Image.new(mode='RGB',
                            size=(self.single_width * 2 + 3 * self.rim,
-                                 self.single_height + 2 * self.rim + 2 * self.font_size),
+                                 self.single_height + 2 * self.rim + 2*self.font_size),
                            color=(255, 255, 255))
         for image_url in weibo.get_pictures():
             if not os.path.exists(self.cache_path):
