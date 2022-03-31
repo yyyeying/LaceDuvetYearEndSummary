@@ -35,7 +35,7 @@ class Coordinates(object):
 
     def gen_coord_list_from_git(self):
         year_list = list(range(self.start_date[0], self.end_date[0] + 1))
-        print(os.popen("git submodule update --init --recursive").read())
+        # print(os.popen("git submodule update --init --recursive").read())
         for year in year_list:
             yaml_file = os.path.join(os.getcwd(), "DuvetsCoordinatesToday", str(year), "info.yaml")
             with open(yaml_file, "r", encoding="utf-8") as f:
