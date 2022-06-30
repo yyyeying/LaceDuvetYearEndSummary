@@ -43,14 +43,20 @@ class Coordinates(object):
             for month_data in data:
                 for day_data in month_data['dates']:
                     date = [year, month_data['month'], day_data['date']]
-                    # print(day_data)
+                    print(date, day_data)
                     if self.date_compare(date):
-                        brand = day_data['coordinates']['brand']
-                        name = [day_data['coordinates']["primary_name"]]
+                        brand: str = day_data['coordinates']['brand']
+                        if "primary_name" in day_data["coordinates"].keys():
+                            name: List[str] = [day_data['coordinates']["primary_name"]]
+                        else:
+                            name: List[str] = [day_data['coordinates']["type"]]
                         if "secondary_name" in day_data['coordinates'].keys():
                             name.append(day_data['coordinates']["secondary_name"])
                         # print(name)
-                        type_ = day_data['coordinates']['type']
+                        if "type" in day_data["coordinates"].keys():
+                            type_: str = day_data['coordinates']['type']
+                        else:
+                            type_: str = day_data["coordinates"]["primary_name"]
                         color = [day_data['coordinates']['color']] \
                             if "color" in day_data['coordinates'].keys() else None
                         if "color_2" in day_data['coordinates'].keys():

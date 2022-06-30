@@ -30,14 +30,18 @@ class ImageGeneratorGit(object):
                 try:
                     self.generate_single(i)
                     single_image = Image.open(os.path.join(self.cache_path,
-                                                           '{}_{}.jpg'.format(
+                                                           '{}_{}_{}_{}_{}_{}.jpg'.format(
+                                                               self.coords.coord_list[i].year,
+                                                               self.coords.coord_list[i].month,
+                                                               self.coords.coord_list[i].day,
+                                                               self.coords.coord_list[i].brand,
                                                                self.coords.coord_list[i].name[-1].replace('/', ', '),
                                                                'single')))
                     box = (0,
                            (self.single_height + 2 * self.rim + 4 * self.font_size) * (i - page * self.pics_per_page),
                            pic_width,
                            (self.single_height + 2 * self.rim + 4 * self.font_size) * (
-                                       i - page * self.pics_per_page + 1))
+                                   i - page * self.pics_per_page + 1))
                     print(box)
                     image.paste(im=single_image,
                                 box=box)
@@ -121,6 +125,8 @@ class ImageGeneratorGit(object):
                       fill=(0, 0, 0))
             pic_num += 1
         target.save(os.path.join(self.cache_path,
-                                 '{}_{}.jpg'.format(coord.name[-1].replace('/', ', '),
-                                                    'single')),
+                                 '{}_{}_{}_{}_{}_{}.jpg'.format(coord.year, coord.month, coord.day,
+                                                             coord.brand,
+                                                             coord.name[-1].replace('/', ', '),
+                                                             'single')),
                     quality=100)
